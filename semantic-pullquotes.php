@@ -58,7 +58,7 @@ if(!class_exists('Semantic_Pullquotes')){
     }
 
     private function standardize_self_closing_tags($html){
-      return preg_replace('/(<(?:br|img)[^<]*?)(?:>|\/>|\s\/>)/', '$1 />', $html);
+      return preg_replace('/(<(?:area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[^<]*?)(?:>|\/>|\s\/>)/', '$1 />', $html);
     }
 
     private function str_replace_once($search, $replace, $subject){
