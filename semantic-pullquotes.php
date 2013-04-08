@@ -21,7 +21,7 @@ if(!class_exists('Semantic_Pullquotes')){
         'position' => 'right'
       ), $atts));
       $content = do_shortcode($content);
-      $content = '<span data-pullquote-text="' . $content . '" data-pullquote-position="' . $position . '">' . $content . '</span>';
+      $content = '<span data-pullquote-text data-pullquote-position="' . $position . '">' . $content . '</span>';
       return $content;
     }
 
@@ -35,16 +35,17 @@ if(!class_exists('Semantic_Pullquotes')){
           $spans = $p->getElementsByTagName('span');
           if($spans->length > 0){
             foreach($spans as $span){
-              $pullquote_text = $span->getAttribute('data-pullquote-text');
-              if(!empty($pullquote_text)){
+              if($span->hasAttribute('data-pullquote-text')){
                 $original_p = $this->standardize_self_closing_tags($content->saveHTML($p));
                 $original_span = $this->standardize_self_closing_tags($content->saveHTML($span));
                 $trimmed_span = preg_replace('/^<span[^<]+data-pullquote-text[^<]+>/', '', $original_span);
                 $trimmed_span = substr($trimmed_span, 0, strlen($trimmed_span) - 7);
 
+                $pullquote_text = htmlentities($trimmed_span);
                 $pullquote_position = $span->getAttribute('data-pullquote-position');
+                $p_existing_class = $p->getAttribute('class');
                 $p->setAttribute('data-pullquote', $pullquote_text);
-                $p->setAttribute('class', 'semantic-pullquote-' . $pullquote_position);
+                $p->setAttribute('class', $p_existing_class . ' semantic-pullquote-' . $pullquote_position);
                 $new_p = $this->standardize_self_closing_tags($content->saveHTML($p));
 
                 $html = $this->str_replace_once($original_p, $new_p, $html);
