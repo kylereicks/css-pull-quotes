@@ -14,6 +14,7 @@ if(!class_exists('Semantic_Pullquotes')){
     function __construct(){
       add_shortcode('pullquote', array($this, 'pullquote_shortcode'));
       add_filter('the_content', array($this, 'pullquote_setup'), 11);
+      add_action('wp_enqueue_scripts', array($this, 'pullquote_styles'));
     }
 
     function pullquote_shortcode($atts, $content = null){
@@ -41,11 +42,12 @@ if(!class_exists('Semantic_Pullquotes')){
                 $trimmed_span = preg_replace('/^<span[^<]+data-pullquote-text[^<]+>/', '', $original_span);
                 $trimmed_span = substr($trimmed_span, 0, strlen($trimmed_span) - 7);
 
-                $pullquote_text = htmlentities($trimmed_span);
+                $pullquote_text = html_entity_decode(strip_tags($trimmed_span));
                 $pullquote_position = $span->getAttribute('data-pullquote-position');
                 $p_existing_class = $p->getAttribute('class');
+                $p_existing_class = !empty($p_existing_class) ? $p_existing_class . ' ' : '';
                 $p->setAttribute('data-pullquote', $pullquote_text);
-                $p->setAttribute('class', $p_existing_class . ' semantic-pullquote-' . $pullquote_position);
+                $p->setAttribute('class', $p_existing_class . 'semantic-pullquote pullquote-' . $pullquote_position);
                 $new_p = $this->standardize_self_closing_tags($content->saveHTML($p));
 
                 $html = $this->str_replace_once($original_p, $new_p, $html);
@@ -56,6 +58,12 @@ if(!class_exists('Semantic_Pullquotes')){
         }
       }
       return $html;
+    }
+
+    function pullquote_styles(){
+        wp_register_style('semantic_pullquote_core', plugins_url('css/semantic-pullquote-core.css', __FILE__), array(), false, 'all');
+        wp_register_style('semantic_pullquote_basic', plugins_url('css/semantic-pullquote-basic.css', __FILE__), array('semantic_pullquote_core'), false, 'all');
+        wp_enqueue_style('semantic_pullquote_basic');
     }
 
     private function standardize_self_closing_tags($html){
