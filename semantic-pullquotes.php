@@ -22,7 +22,7 @@ if(!class_exists('Semantic_Pullquotes')){
         'position' => 'right'
       ), $atts));
       $content = do_shortcode($content);
-      $content = '<span data-pullquote-text data-pullquote-position="' . $position . '">' . $content . '</span>';
+      $content = '<span data-pullquote-text="true" data-pullquote-position="' . $position . '">' . $content . '</span>';
       return $content;
     }
 
@@ -37,12 +37,13 @@ if(!class_exists('Semantic_Pullquotes')){
           if($spans->length > 0){
             foreach($spans as $span){
               if($span->hasAttribute('data-pullquote-text')){
-                $original_p = $this->standardize_self_closing_tags($content->saveHTML($p));
-                $original_span = $this->standardize_self_closing_tags($content->saveHTML($span));
+                $original_p = $this->allow_empty_spans($this->standardize_self_closing_tags($content->saveXML($p)));
+                $original_p = str_replace(array('“', '”', '’', '=""', 'Â'), array('&#8220;', '&#8221;', '&#8217;', '', ''), $original_p);
+                $original_span = $this->standardize_self_closing_tags($content->saveXML($span));
                 $trimmed_span = preg_replace('/^<span[^<]+data-pullquote-text[^<]+>/', '', $original_span);
                 $trimmed_span = substr($trimmed_span, 0, strlen($trimmed_span) - 7);
 
-                $pullquote_text = html_entity_decode(strip_tags($trimmed_span));
+                $pullquote_text = html_entity_decode(strip_tags($original_span));
                 $pullquote_position = $span->getAttribute('data-pullquote-position');
                 $p_existing_class = $p->getAttribute('class');
                 $p_existing_class = !empty($p_existing_class) ? $p_existing_class . ' ' : '';
@@ -61,13 +62,16 @@ if(!class_exists('Semantic_Pullquotes')){
     }
 
     function pullquote_styles(){
-        wp_register_style('semantic_pullquote_core', plugins_url('css/semantic-pullquote-core.css', __FILE__), array(), false, 'all');
-        wp_register_style('semantic_pullquote_basic', plugins_url('css/semantic-pullquote-basic.css', __FILE__), array('semantic_pullquote_core'), false, 'all');
+        wp_register_style('semantic_pullquote_basic', plugins_url('css/semantic-pullquote-basic.css', __FILE__), array(), false, 'all');
         wp_enqueue_style('semantic_pullquote_basic');
     }
 
     private function standardize_self_closing_tags($html){
       return preg_replace('/(<(?:area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[^<]*?)(?:>|\/>|\s\/>)/', '$1 />', $html);
+    }
+
+    private function allow_empty_spans($html){
+      return preg_replace('/(<(span|div)[^<]*?)(?:\/>|\s\/>)/', '$1></$2>', $html);
     }
 
     private function str_replace_once($search, $replace, $subject){
