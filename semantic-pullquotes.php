@@ -38,7 +38,7 @@ if(!class_exists('Semantic_Pullquotes')){
             foreach($spans as $span){
               if($span->hasAttribute('data-pullquote-text')){
                 $original_p = $this->allow_empty_spans($this->standardize_self_closing_tags($content->saveXML($p)));
-                $original_p = str_replace(array('“', '”', '’', '=""', 'Â'), array('&#8220;', '&#8221;', '&#8217;', '', ''), $original_p);
+                $original_p = $this->trouble_characters($original_p);
                 $original_span = $this->standardize_self_closing_tags($content->saveXML($span));
                 $trimmed_span = preg_replace('/^<span[^<]+data-pullquote-text[^<]+>/', '', $original_span);
                 $trimmed_span = substr($trimmed_span, 0, strlen($trimmed_span) - 7);
@@ -50,6 +50,7 @@ if(!class_exists('Semantic_Pullquotes')){
                 $p->setAttribute('data-pullquote', $pullquote_text);
                 $p->setAttribute('class', $p_existing_class . 'semantic-pullquote pullquote-' . $pullquote_position);
                 $new_p = $this->standardize_self_closing_tags($content->saveHTML($p));
+                $new_p = $this->trouble_characters($new_p);
 
                 $html = $this->str_replace_once($original_p, $new_p, $html);
                 $html = $this->str_replace_once($original_span, $trimmed_span, $html);
@@ -72,6 +73,10 @@ if(!class_exists('Semantic_Pullquotes')){
 
     private function allow_empty_spans($html){
       return preg_replace('/(<(span|div)[^<]*?)(?:\/>|\s\/>)/', '$1></$2>', $html);
+    }
+
+    private function trouble_characters($html){
+      return str_replace(array('“', '”', '‘', '’', '=""', 'Â'), array('&#8220;', '&#8221;', '&#8216;', '&#8217;', '', ''), $html);
     }
 
     private function str_replace_once($search, $replace, $subject){
