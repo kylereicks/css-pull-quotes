@@ -1,8 +1,30 @@
 .pullquote-right:before{
+  content: attr(data-pullquote);
   display: block;
   width: 30%;
   font-size: 1.5em;
   line-height: 1.3em;
   float: right;
   padding-left: 1em;
+}
+
+.pullquote-left:before{
+  content: attr(data-pullquote);
+  display: block;
+  width: 30%;
+  font-size: 1.5em;
+  line-height: 1.3em;
+  float: left;
+  padding-right: 1em;
+}
+
+.pullquote-top:before{
+  content: attr(data-pullquote);
+  display: block;
+  width: 70%;
+  font-size: 1.5em;
+  line-height: 1.3em;
+  float: none;
+  text-align: center;
+  margin: 1.5em auto;
 }
