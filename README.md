@@ -23,4 +23,6 @@ This plugin adds one shortcode `[pullquote]`, which is used to select the text f
 
 The `[pullquote]` shortcode takes one attribute, `position`. The `position` attribute adds a class of `pullquote-{position}` to the pullquote's parent paragraph. This class signals to the CSS how to display and sytle the pullquote.
 
-The default CSS has three positions: `right`, `left`, and `top`.
+The default CSS has three positions: `right`, `left`, and `top`. Whith no `position` attribute defined, the pullquote will default to `right`. When the default CSS is finally applied, the above example looks something like this:
+
+![Pullquote screenshot](https://raw.github.com/kylereicks/semantic-pullquotes/master/assets/pullquote-example.png)
