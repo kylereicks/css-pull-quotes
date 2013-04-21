@@ -21,4 +21,6 @@ This plugin adds one shortcode `[pullquote]`, which is used to select the text f
     euismod vitae adipiscing non, convallis vel mauris. Suspendisse dapibus
     ligula interdum leo ultrices id accumsan lorem ullamcorper.
 
-The `[pullquote]` shortcode takes one attribute, `position`. The `position` attribute adds a class of `pullquote-{position}` to the pullquote's parent paragraph. This class is used to display and sytle the pullquote.
+The `[pullquote]` shortcode takes one attribute, `position`. The `position` attribute adds a class of `pullquote-{position}` to the pullquote's parent paragraph. This class signals to the CSS how to display and sytle the pullquote.
+
+The default CSS has three positions: `right`, `left`, and `top`.
