@@ -5,7 +5,7 @@ Plugin URI: http://github.com/kylereicks/semantic-pullquotes
 Description: A wordpress plugin to use sematic pullquotes, which display pullquotes via CSS.
 Author: Kyle Reicks
 Version: 0.1
-Author URI: http://kylereicks.me
+Author URI: http://github.com/kylereicks
 */
 
 if(!class_exists('Semantic_Pullquotes')){
