@@ -12,6 +12,8 @@ if(!class_exists('Semantic_Pullquotes')){
   class Semantic_Pullquotes{
 
     function __construct(){
+      require_once('php/class-semantic-pullquote-admin-settings.php');
+      $semantic_pullquote_admin_settings = new Semantic_Pullquote_Admin_settings();
       add_shortcode('pullquote', array($this, 'pullquote_shortcode'));
       add_filter('the_content', array($this, 'pullquote_setup'), 11);
       add_action('wp_enqueue_scripts', array($this, 'pullquote_styles'));
@@ -63,8 +65,11 @@ if(!class_exists('Semantic_Pullquotes')){
     }
 
     function pullquote_styles(){
+      $exclude_css = get_option('_exclude_css');
+      if($exclude_css != 1){
         wp_register_style('semantic_pullquote_basic', plugins_url('css/semantic-pullquote-basic.css', __FILE__), array(), false, 'all');
         wp_enqueue_style('semantic_pullquote_basic');
+      }
     }
 
     private function standardize_self_closing_tags($html){
