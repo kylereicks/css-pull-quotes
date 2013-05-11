@@ -1,5 +1,5 @@
-.pullquote-right:before{
-  content: attr(data-pullquote);
+.pull-quote-right:before{
+  content: attr(data-pull-quote);
   display: block;
   width: 30%;
   font-size: 1.5em;
@@ -8,8 +8,8 @@
   padding-left: 1em;
 }
 
-.pullquote-left:before{
-  content: attr(data-pullquote);
+.pull-quote-left:before{
+  content: attr(data-pull-quote);
   display: block;
   width: 30%;
   font-size: 1.5em;
@@ -18,8 +18,8 @@
   padding-right: 1em;
 }
 
-.pullquote-top:before{
-  content: attr(data-pullquote);
+.pull-quote-top:before{
+  content: attr(data-pull-quote);
   display: block;
   width: 70%;
   font-size: 1.5em;

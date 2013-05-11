@@ -1,10 +1,10 @@
 (function(){
-  tinymce.create('tinymce.plugins.pullquote', {
+  tinymce.create('tinymce.plugins.cssPullQuote', {
     init: function(ed, url){
-      ed.addButton('semantic_pullquote', {
-        title: 'Pullquote',
+      ed.addButton('css_pull_quote', {
+        title: 'Pull Quote',
         cmd: 'pullquote',
-        image: url + '/../assets/pullquote-button20x20.png'
+        image: url + '/../assets/pull-quote-button20x20.png'
       });
       ed.addCommand('pullquote', function(){
         var selectedText = ed.selection.getContent();
@@ -20,11 +20,11 @@
     },
     getInfo: function(){
       return {
-        longname: 'Pullquote Button',
+        longname: 'CSS Pull Quote Button',
         author: 'kylereicks',
         version: '0.1.0'
       }
     }
   });
-  tinymce.PluginManager.add('semantic_pullquote', tinymce.plugins.pullquote);
+  tinymce.PluginManager.add('css_pull_quote', tinymce.plugins.cssPullQuote);
 })();

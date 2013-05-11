@@ -1,33 +1,33 @@
 <?php
-if(!class_exists('Semantic_Pullquote_Admin_Settings')){
-  class Semantic_Pullquote_Admin_Settings{
+if(!class_exists('CSS_Pull_Quote_Admin_Settings')){
+  class CSS_Pull_Quote_Admin_Settings{
 
     function __construct(){
       if(is_admin()){
-        add_action('admin_menu', array($this, 'add_semantic_pullquote_settings_page'));
-        add_action('admin_init', array($this, 'init_semantic_pullquote_settings'));
+        add_action('admin_menu', array($this, 'add_css_pull_quote_settings_page'));
+        add_action('admin_init', array($this, 'init_css_pull_quote_settings'));
       }
     }
 
-    function add_semantic_pullquote_settings_page(){
+    function add_css_pull_quote_settings_page(){
       add_plugins_page(
-        'Semantic Pullquote Settings',
-        'Semantic Pullquote Settings',
+        'CSS Pull Quote Settings',
+        'CSS Pull Quote Settings',
         'manage_options',
-        'semantic_pullquote_settings_page',
-        array($this, 'semantic_pullquote_settings_page_view')
+        'css_pull_quote_settings_page',
+        array($this, 'css_pull_quote_settings_page_view')
       );
     }
 
-    function semantic_pullquote_settings_page_view(){
+    function css_pull_quote_settings_page_view(){
       ?>
       <div class="wrap">
         <?php screen_icon(); ?>
-        <h2>Semantic Pullquote Settings</h2>
+        <h2>CSS Pull Quote Settings</h2>
         <form method="post" action="options.php">
         <?php
-          settings_fields('semantic_pullquote_settings_group');
-          do_settings_sections('semantic_pullquote_settings_page');
+          settings_fields('css_pull_quote_settings_group');
+          do_settings_sections('css_pull_quote_settings_page');
         ?>
         <?php submit_button(); ?>
         </form>
@@ -35,10 +35,10 @@ if(!class_exists('Semantic_Pullquote_Admin_Settings')){
       <?php
     }
 
-    function init_semantic_pullquote_settings(){
+    function init_css_pull_quote_settings(){
       // exclude css setting
       register_setting(
-        'semantic_pullquote_settings_group',
+        'css_pull_quote_settings_group',
         '_exclude_css'
       );
 
@@ -46,14 +46,14 @@ if(!class_exists('Semantic_Pullquote_Admin_Settings')){
         'exclude_css_settings_section',
         'Exclude CSS',
         array($this, 'exclude_css_settings_section_info'),
-        'semantic_pullquote_settings_page'
+        'css_pull_quote_settings_page'
       );
 
       add_settings_field(
         'exclude_css',
         'Exclude Plugin CSS',
         array($this, 'exclude_css_field_view'),
-        'semantic_pullquote_settings_page',
+        'css_pull_quote_settings_page',
         'exclude_css_settings_section'
       );
     }

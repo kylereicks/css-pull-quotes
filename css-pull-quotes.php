@@ -1,23 +1,23 @@
 <?php
 /*
-Plugin Name: Semantic Pullquotes
+Plugin Name: CSS Pull Quotes
 Plugin URI: http://github.com/kylereicks/semantic-pullquotes
-Description: A wordpress plugin to use sematic pullquotes, which display pullquotes via CSS.
+Description: A wordpress plugin to display pullquotes via CSS.
 Author: Kyle Reicks
 Version: 0.1
 Author URI: http://github.com/kylereicks
 */
 
-if(!class_exists('Semantic_Pullquotes')){
-  class Semantic_Pullquotes{
+if(!class_exists('CSS_Pull_Quotes')){
+  class CSS_Pull_Quotes{
 
     function __construct(){
-      require_once('php/class-semantic-pullquote-admin-settings.php');
-      $semantic_pullquote_admin_settings = new Semantic_Pullquote_Admin_settings();
+      require_once('php/class-css-pull-quote-admin-settings.php');
+      $css_pull_quote_admin_settings = new CSS_Pull_Quote_Admin_Settings();
       add_shortcode('pullquote', array($this, 'pullquote_shortcode'));
-      add_filter('the_content', array($this, 'pullquote_setup'), 11);
-      add_action('wp_enqueue_scripts', array($this, 'pullquote_styles'));
-      add_action('init', array($this, 'add_pullquote_button_tinymce'));
+      add_filter('the_content', array($this, 'css_pull_quote_html'), 11);
+      add_action('wp_enqueue_scripts', array($this, 'pull_quote_styles'));
+      add_action('init', array($this, 'add_pullquote_shortcode_button_tinymce'));
     }
 
     function pullquote_shortcode($atts, $content = null){
@@ -25,11 +25,11 @@ if(!class_exists('Semantic_Pullquotes')){
         'position' => 'right'
       ), $atts));
       $content = do_shortcode($content);
-      $content = '<span data-pullquote-text="true" data-pullquote-position="' . $position . '">' . $content . '</span>';
+      $content = '<span data-pull-quote-text="true" data-pull-quote-position="' . $position . '">' . $content . '</span>';
       return $content;
     }
 
-    function pullquote_setup($html){
+    function css_pull_quote_html($html){
       $html = $this->standardize_self_closing_tags($html);
       $content = new DOMDocument();
       $content->loadHTML($html);
@@ -39,19 +39,19 @@ if(!class_exists('Semantic_Pullquotes')){
           $spans = $p->getElementsByTagName('span');
           if($spans->length > 0){
             foreach($spans as $span){
-              if($span->hasAttribute('data-pullquote-text')){
+              if($span->hasAttribute('data-pull-quote-text')){
                 $original_p = $this->allow_empty_spans($this->standardize_self_closing_tags($content->saveXML($p)));
                 $original_p = $this->trouble_characters($original_p);
                 $original_span = $this->standardize_self_closing_tags($content->saveXML($span));
-                $trimmed_span = preg_replace('/^<span[^<]+data-pullquote-text[^<]+>/', '', $original_span);
+                $trimmed_span = preg_replace('/^<span[^<]+data-pull-quote-text[^<]+>/', '', $original_span);
                 $trimmed_span = substr($trimmed_span, 0, strlen($trimmed_span) - 7);
 
-                $pullquote_text = html_entity_decode(strip_tags($original_span));
-                $pullquote_position = $span->getAttribute('data-pullquote-position');
+                $pull_quote_text = html_entity_decode(strip_tags($original_span));
+                $pull_quote_position = $span->getAttribute('data-pull-quote-position');
                 $p_existing_class = $p->getAttribute('class');
                 $p_existing_class = !empty($p_existing_class) ? $p_existing_class . ' ' : '';
-                $p->setAttribute('data-pullquote', $pullquote_text);
-                $p->setAttribute('class', $p_existing_class . 'semantic-pullquote pullquote-' . $pullquote_position);
+                $p->setAttribute('data-pull-quote', $pull_quote_text);
+                $p->setAttribute('class', $p_existing_class . 'css-pull-quote pull-quote-' . $pull_quote_position);
                 $new_p = $this->standardize_self_closing_tags($content->saveHTML($p));
                 $new_p = $this->trouble_characters($new_p);
 
@@ -65,11 +65,11 @@ if(!class_exists('Semantic_Pullquotes')){
       return $html;
     }
 
-    function pullquote_styles(){
+    function pull_quote_styles(){
       $exclude_css = get_option('_exclude_css');
       if($exclude_css != 1){
-        wp_register_style('semantic_pullquote_basic', plugins_url('css/semantic-pullquote-basic.css', __FILE__), array(), false, 'all');
-        wp_enqueue_style('semantic_pullquote_basic');
+        wp_register_style('css_pull_quote_basic', plugins_url('css/css-pull-quote-basic.css', __FILE__), array(), false, 'all');
+        wp_enqueue_style('css_pull_quote_basic');
       }
     }
 
@@ -94,22 +94,22 @@ if(!class_exists('Semantic_Pullquotes')){
       }
     }
 
-    function add_pullquote_button_tinymce(){
+    function add_pullquote_shortcode_button_tinymce(){
       if(get_user_option('rich_editing') && current_user_can('edit_posts') || current_user_can('edit_pages')){
-        add_filter('mce_external_plugins', array($this, 'pullquote_mce_plugin'));
-        add_filter('mce_buttons', array($this, 'pullquote_mce_button'));
+        add_filter('mce_external_plugins', array($this, 'pullquote_shortcode_mce_plugin'));
+        add_filter('mce_buttons', array($this, 'pullquote_shortcode_mce_button'));
       }
     }
 
-    function pullquote_mce_plugin($plugin_array){
-      $plugin_array['semantic_pullquote'] = plugins_url('js/pullquote-mce-button.js', __FILE__);
+    function pullquote_shortcode_mce_plugin($plugin_array){
+      $plugin_array['css_pull_quote'] = plugins_url('js/pullquote-shortcode-mce-button.js', __FILE__);
       return $plugin_array;
     }
 
-    function pullquote_mce_button($buttons){
-      array_push($buttons, 'semantic_pullquote');
+    function pullquote_shortcode_mce_button($buttons){
+      array_push($buttons, 'css_pull_quote');
       return $buttons;
     }
   }
-  $semantic_pullquotes = new Semantic_Pullquotes();
+  $css_pull_quotes = new CSS_Pull_Quotes();
 }

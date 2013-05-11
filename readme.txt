@@ -1,4 +1,4 @@
-=== Semantic Pullquote ===
+=== CSS Pull Quotes ===
 Contributors: kylereicks
 Donate link: http://shakopee.dollarsforscholars.org/
 Tags: pullquote, pull quote, CSS, HTML5
@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A Wordpress plugin for easy pullquotes using CSS.
+A Wordpress plugin for easy Pull Quotes using CSS.
 
 == Description ==
 

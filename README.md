@@ -1,4 +1,4 @@
-Semantic Pullquotes
+CSS Pull Quotes
 ===================
 
 A Wordpress plugin inspired by the blog post "[Pull Quotes with HTML5 and CSS](http://miekd.com/articles/pull-quotes-with-html5-and-css/)" by [Maykel Loomans](http://www.maykelloomans.com/).
@@ -25,4 +25,4 @@ The `[pullquote]` shortcode takes one attribute, `position`. The `position` attr
 
 The default CSS has three positions: `right`, `left`, and `top`. Whith no `position` attribute defined, the pullquote will default to `right`. When the default CSS is finally applied, the above example looks something like this:
 
-![Pullquote screenshot](https://raw.github.com/kylereicks/semantic-pullquotes/master/assets/pullquote-example.png)
+![Pull quote screenshot](https://raw.github.com/kylereicks/semantic-pullquotes/master/assets/pull-quote-example.png)
