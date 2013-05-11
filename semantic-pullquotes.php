@@ -17,6 +17,7 @@ if(!class_exists('Semantic_Pullquotes')){
       add_shortcode('pullquote', array($this, 'pullquote_shortcode'));
       add_filter('the_content', array($this, 'pullquote_setup'), 11);
       add_action('wp_enqueue_scripts', array($this, 'pullquote_styles'));
+      add_action('init', array($this, 'add_pullquote_button_tinymce'));
     }
 
     function pullquote_shortcode($atts, $content = null){
@@ -91,6 +92,23 @@ if(!class_exists('Semantic_Pullquotes')){
       }else{
         return $subject;
       }
+    }
+
+    function add_pullquote_button_tinymce(){
+      if(get_user_option('rich_editing') && current_user_can('edit_posts') || current_user_can('edit_pages')){
+        add_filter('mce_external_plugins', array($this, 'pullquote_mce_plugin'));
+        add_filter('mce_buttons', array($this, 'pullquote_mce_button'));
+      }
+    }
+
+    function pullquote_mce_plugin($plugin_array){
+      $plugin_array['semantic_pullquote'] = plugins_url('js/pullquote-mce-button.js', __FILE__);
+      return $plugin_array;
+    }
+
+    function pullquote_mce_button($buttons){
+      array_push($buttons, 'semantic_pullquote');
+      return $buttons;
     }
   }
   $semantic_pullquotes = new Semantic_Pullquotes();
