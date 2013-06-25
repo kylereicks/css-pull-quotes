@@ -1,15 +1,34 @@
 <?php
-if(!class_exists('CSS_Pull_Quote_Admin_Settings')){
-  class CSS_Pull_Quote_Admin_Settings{
+if(!class_exists('CSS_Pull_Quotes_Admin_Settings')){
+  class CSS_Pull_Quotes_Admin_Settings{
 
-    function __construct(){
+    // Setup singleton pattern
+    public static function get_instance(){
+      static $instance;
+
+      if(null === $instance){
+        $instance = new self();
+      }
+
+      return $instance;
+    }
+
+    private function __clone(){
+      return null;
+    }
+
+    private function __wakeup(){
+      return null;
+    }
+
+    private function __construct(){
       if(is_admin()){
         add_action('admin_menu', array($this, 'add_css_pull_quote_settings_page'));
         add_action('admin_init', array($this, 'init_css_pull_quote_settings'));
       }
     }
 
-    function add_css_pull_quote_settings_page(){
+    public function add_css_pull_quote_settings_page(){
       add_plugins_page(
         'CSS Pull Quote Settings',
         'CSS Pull Quote Settings',
@@ -19,7 +38,7 @@ if(!class_exists('CSS_Pull_Quote_Admin_Settings')){
       );
     }
 
-    function css_pull_quote_settings_page_view(){
+    public function css_pull_quote_settings_page_view(){
       ?>
       <div class="wrap">
         <?php screen_icon(); ?>
@@ -35,11 +54,11 @@ if(!class_exists('CSS_Pull_Quote_Admin_Settings')){
       <?php
     }
 
-    function init_css_pull_quote_settings(){
+    public function init_css_pull_quote_settings(){
       // exclude css setting
       register_setting(
         'css_pull_quote_settings_group',
-        '_exclude_css'
+        '_css_pull_quotes_exclude_css'
       );
 
       add_settings_section(
@@ -59,16 +78,16 @@ if(!class_exists('CSS_Pull_Quote_Admin_Settings')){
     }
 
     // section info
-    function exclude_css_settings_section_info(){
+    public function exclude_css_settings_section_info(){
       echo 'You can improve your proformance by excluding the plugin CSS and adding the CSS directly to your theme files.';
     }
 
     // fields
-    function exclude_css_field_view($datasets){
-      $exclude_css = get_option('_exclude_css');
+    public function exclude_css_field_view($datasets){
+      $exclude_css = get_option('_css_pull_quotes_exclude_css');
       $exclude_css = isset($exclude_css) && $exclude_css == 1 ? true : false;
       ?>
-        <label for="checkbox_exclude_css">Exclude the default plugin css:</label> <input type="checkbox" name="_exclude_css" id="checkbox_exclude_css" value="1"<?php echo $exclude_css ? ' checked' : ''; ?> /><br />
+        <label for="checkbox_exclude_css">Exclude the default plugin css:</label> <input type="checkbox" name="_css_pull_quotes_exclude_css" id="checkbox_exclude_css" value="1"<?php echo $exclude_css ? ' checked' : ''; ?> /><br />
       <?php
     }
   }
