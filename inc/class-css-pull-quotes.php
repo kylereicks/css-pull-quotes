@@ -77,8 +77,8 @@ if(!class_exists('CSS_Pull_Quotes')){
                 $p->setAttribute('class', $p_existing_class . 'css-pull-quote pull-quote-' . $pull_quote_position);
                 $new_p = self::standardize_self_closing_tags($content->saveHTML($p));
 
-                $html = $this->str_replace_once(self::fix_empty_attributes($original_p), $new_p, html_entity_decode($html, ENT_COMPAT, 'UTF-8'));
-                $html = $this->str_replace_once($original_span, $trimmed_span, $html);
+                $html = self::str_replace_once(self::fix_empty_attributes($original_p), $new_p, html_entity_decode($html, ENT_COMPAT, 'UTF-8'));
+                $html = self::str_replace_once($original_span, $trimmed_span, $html);
               }
             }
           }
@@ -95,19 +95,19 @@ if(!class_exists('CSS_Pull_Quotes')){
       }
     }
 
-    static function standardize_self_closing_tags($html){
+    public static function standardize_self_closing_tags($html){
       return preg_replace('/(<(?:area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[^<]*?)(?:>|\/>|\s\/>)/', '$1 />', $html);
     }
 
-    static function allow_empty_spans($html){
+    public static function allow_empty_spans($html){
       return preg_replace('/(<(span|div)[^<]*?)(?:\/>|\s\/>)/', '$1></$2>', $html);
     }
 
-    private function fix_empty_attributes($html){
+    public static function fix_empty_attributes($html){
       return str_replace('=""', '', $html);
     }
 
-    private function str_replace_once($search, $replace, $subject){
+    public static function str_replace_once($search, $replace, $subject){
       $string_position = strpos($subject, $search);
       if($string_position !== false){
         return substr_replace($subject, $replace, $string_position, strlen($search));
