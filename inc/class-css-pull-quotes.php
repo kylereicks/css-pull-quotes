@@ -54,7 +54,8 @@ if(!class_exists('CSS_Pull_Quotes')){
     }
 
     public function css_pull_quote_html($html){
-      $html = self::standardize_self_closing_tags($html);
+      // Call wpautop on the content string, to cover cases where the pull-quote is a full paragraph.
+      $html = self::standardize_self_closing_tags( wpautop( $html ) );
       $content = new DOMDocument();
       $content->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $html);
       $paragraphs = $content->getElementsByTagName('p');

@@ -4,13 +4,13 @@ Plugin Name: CSS Pull Quotes
 Plugin URI: http://github.com/kylereicks/semantic-pullquotes
 Description: A wordpress plugin to display pullquotes via CSS.
 Author: Kyle Reicks
-Version: 0.1
+Version: 0.1.1
 Author URI: http://github.com/kylereicks
 */
 
 define('CSS_PULL_QUOTES_PATH', plugin_dir_path(__FILE__));
 define('CSS_PULL_QUOTES_URL', plugins_url('/', __FILE__));
-define('CSS_PULL_QUOTES_VERSION', '0.1.0');
+define('CSS_PULL_QUOTES_VERSION', '0.1.1');
 
 require_once(CSS_PULL_QUOTES_PATH . 'inc/class-css-pull-quotes.php');
 
